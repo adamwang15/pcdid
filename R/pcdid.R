@@ -1,4 +1,13 @@
-pcdid <- function(depvar, treatvar, didvar, indepvar, id, time, data, p) {
+pcdid <- function(formula, index, data, p) {
+  # formula
+  vars <- all.vars(formula)
+  depvar <- vars[1]
+  treatvar <- vars[2]
+  didvar <- vars[3]
+  indepvar <- vars[-(1:3)]
+  id <- index[1]
+  time <- index[2]
+
   # preprocess data
   data <- data[order(data[[id]], data[[time]]), ]
   data0 <- data[data[[treatvar]] == 0, ]
@@ -44,7 +53,6 @@ pcdid <- function(depvar, treatvar, didvar, indepvar, id, time, data, p) {
 
   # pcdid regression
   beta <- matrix(NA, 1 + p + length(indepvar) + 1, Nt)
-  # beta <- matrix(NA, 2 + length(indepvar), Nt)
   for (j in 1:Nt) {
     idx <- which(data1[[id]] == id1[j])
     X1i <- as.matrix(X1[idx, ])

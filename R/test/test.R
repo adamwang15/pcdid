@@ -7,4 +7,4 @@ result <- pcdid(
   # fproxy = 4
 )
 
-result$mg
+result$mean_group

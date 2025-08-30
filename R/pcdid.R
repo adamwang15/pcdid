@@ -108,7 +108,7 @@ pcdid <- function(
   mg_var <- rowSums((beta - mg_beta)^2) / (Nt * (Nt - 1))
   fake_lm <- list(coefficients = mg_beta)
   class(fake_lm) <- "lm"
-  out$mg <- lmtest::coeftest(fake_lm, vcov. = diag(mg_var))
+  out$mean_group <- lmtest::coeftest(fake_lm, vcov. = diag(mg_var))
 
   return(out)
 }

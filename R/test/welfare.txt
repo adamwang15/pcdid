@@ -1,0 +1,414 @@
+t-------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  \\uom-file.unimelb.edu.au\citrix\daasredirected\fbe\xiaoleiw3\Desktop\pcdid\welfare.log
+  log type:  text
+ opened on:  12 Jul 2025, 19:40:00
+
+. do "C:\Users\XIAOLE~1\AppData\Local\Temp\2\STD3a98_000004.tmp"
+
+. xtset
+variable statenum not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. use "\\uom-file.unimelb.edu.au\citrix\daasredirected\fbe\xiaoleiw3\Desktop\pcdid\welfare.dta", clear
+
+. do "C:\Users\XIAOLE~1\AppData\Local\Temp\2\STD3a98_000005.tmp"
+
+. xtset
+
+Panel variable: statenum (strongly balanced)
+ Time variable: trend, 1 to 117
+         Delta: 1 unit
+
+. 
+. /***************************************************************/
+. /* Table IV panel A */
+. pcdid lncase treated treated_post afdcben unemp empratio mon_d*, alpha
+
+PCDID: Principal    Components              Number of obs           =     5967
+       Diff-in-Diff Regression              Number of groups        =       51
+      (by CK, *PCDID Approach*)             (Treated =      31)
+                                            (Control =      20)
+                                            Obs per group           =      117
+Method: Mean-Group (PCDID-MG)               Number of factors used  =        4
+
+------------------------------------------------------------------------------
+      lncase | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+treated_post |  -.0168484   .0071048    -2.37   0.018    -.0307736   -.0029232
+     afdcben |   .0143423   .0075024     1.91   0.056    -.0003621    .0290468
+       unemp |   .0206647   .0035431     5.83   0.000     .0137203    .0276091
+    empratio |   .0579938   .1285858     0.45   0.652    -.1940298    .3100175
+      mon_d2 |   .0261549   .0037348     7.00   0.000     .0188349    .0334749
+      mon_d3 |   .0238558   .0049483     4.82   0.000     .0141572    .0335544
+      mon_d4 |    .010369   .0042303     2.45   0.014     .0020778    .0186602
+     fproxy1 |   3.168566    .560627     5.65   0.000     2.069757    4.267375
+     fproxy2 |    2.27854   .5683153     4.01   0.000     1.164663    3.392417
+     fproxy3 |    1.72871   .7313678     2.36   0.018     .2952553    3.162164
+     fproxy4 |   -3.17232    .691836    -4.59   0.000    -4.528294   -1.816347
+       _cons |  -4.455663   .0878986   -50.69   0.000    -4.627941   -4.283385
+------------------------------------------------------------------------------
+# of treated groups in computing the MG coefficient on treated_post = 31
+
+Number of factors determined by a recursive procedure:
+    I(0) factors  = 2
+    I(1) factors  = 2
+    Maximum factors set by user = 10
+
+Parallel trend alpha test (Ho: alpha = 1, Ha: alpha != 1):
+    Alpha statistic =       .9918       Std. Err.  =       .1375
+    z               =     -.05936       P>|z|      =       .9527
+
+. pcdid lncase treated treated_post afdcben unemp empratio mon_d*, tr(south==1) alpha
+
+PCDID: Principal    Components              Number of obs           =     3510
+       Diff-in-Diff Regression              Number of groups        =       30
+      (by CK, *PCDID Approach*)             (Treated =      10)
+                                            (Control =      20)
+                                            Obs per group           =      117
+Method: Mean-Group (PCDID-MG)               Number of factors used  =        4
+
+------------------------------------------------------------------------------
+      lncase | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+treated_post |  -.0244136   .0071497    -3.41   0.001    -.0384267   -.0104005
+     afdcben |   .0461857   .0187253     2.47   0.014     .0094849    .0828866
+       unemp |   .0161319   .0059556     2.71   0.007     .0044591    .0278047
+    empratio |   .0696494   .2359176     0.30   0.768    -.3927406    .5320393
+      mon_d2 |   .0221659   .0055946     3.96   0.000     .0112006    .0331312
+      mon_d3 |   .0214452   .0053904     3.98   0.000     .0108803    .0320102
+      mon_d4 |   .0074489   .0038024     1.96   0.050    -3.71e-06    .0149014
+     fproxy1 |   3.472479   .7411285     4.69   0.000     2.019893    4.925064
+     fproxy2 |    3.09692    .769183     4.03   0.000     1.589349    4.604491
+     fproxy3 |   1.229398   1.565051     0.79   0.432    -1.838046    4.296842
+     fproxy4 |  -3.322616    1.16372    -2.86   0.004    -5.603466   -1.041766
+       _cons |  -4.526758   .1518445   -29.81   0.000    -4.824368   -4.229148
+------------------------------------------------------------------------------
+# of treated groups in computing the MG coefficient on treated_post = 10
+
+Number of factors determined by a recursive procedure:
+    I(0) factors  = 2
+    I(1) factors  = 2
+    Maximum factors set by user = 10
+
+Parallel trend alpha test (Ho: alpha = 1, Ha: alpha != 1):
+    Alpha statistic =       1.189       Std. Err.  =       .1826
+    z               =       1.035       P>|z|      =       .3004
+
+. pcdid lncase treated treated_post afdcben unemp empratio mon_d*, tr(south==0) alpha
+
+PCDID: Principal    Components              Number of obs           =     4797
+       Diff-in-Diff Regression              Number of groups        =       41
+      (by CK, *PCDID Approach*)             (Treated =      21)
+                                            (Control =      20)
+                                            Obs per group           =      117
+Method: Mean-Group (PCDID-MG)               Number of factors used  =        4
+
+------------------------------------------------------------------------------
+      lncase | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+treated_post |   -.013246   .0099402    -1.33   0.183    -.0327285    .0062365
+     afdcben |  -.0008212   .0037226    -0.22   0.825    -.0081174     .006475
+       unemp |   .0228232    .004413     5.17   0.000     .0141738    .0314725
+    empratio |   .0524436      .1571     0.33   0.739    -.2554667    .3603539
+      mon_d2 |   .0280544     .00486     5.77   0.000      .018529    .0375799
+      mon_d3 |   .0250037   .0069129     3.62   0.000     .0114546    .0385528
+      mon_d4 |   .0117595   .0060189     1.95   0.051    -.0000373    .0235564
+     fproxy1 |   3.023846   .7582932     3.99   0.000     1.537619    4.510073
+     fproxy2 |   1.888835   .7515681     2.51   0.012     .4157889    3.361882
+     fproxy3 |   1.966477   .8067143     2.44   0.015     .3853463    3.547608
+     fproxy4 |  -3.100751   .8768409    -3.54   0.000    -4.819328   -1.382174
+       _cons |  -4.421808   .1094968   -40.38   0.000    -4.636418   -4.207198
+------------------------------------------------------------------------------
+# of treated groups in computing the MG coefficient on treated_post = 21
+
+Number of factors determined by a recursive procedure:
+    I(0) factors  = 2
+    I(1) factors  = 2
+    Maximum factors set by user = 10
+
+Parallel trend alpha test (Ho: alpha = 1, Ha: alpha != 1):
+    Alpha statistic =       .8979       Std. Err.  =       .1827
+    z               =      -.5587       P>|z|      =       .5764
+
+. pcdid lncase treated treated_post afdcben unemp empratio mon_d*, tr(state=="WY") nw(3)
+
+PCDID: Principal    Components              Number of obs           =     2457
+       Diff-in-Diff Regression              Number of groups        =       21
+      (by CK, *PCDID Approach*)             (Treated =       1)
+                                            (Control =      20)
+                                            Obs per group           =      117
+Method: Basic (PCDID-basic)                 Number of factors used  =        4
+                                            Number of NW lags used  =        3
+------------------------------------------------------------------------------
+             |             Newey–West
+      lncase | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+treated_post |  -.1142959   .0280812    -4.07   0.000    -.1699758   -.0586161
+     afdcben |  -.0096464   .0194555    -0.50   0.621    -.0482231    .0289303
+       unemp |  -.0303034   .0078223    -3.87   0.000    -.0458135   -.0147933
+    empratio |    -.62153   .3450325    -1.80   0.075    -1.305666    .0626057
+      mon_d2 |  -.0185256   .0129566    -1.43   0.156    -.0442162     .007165
+      mon_d3 |  -.0613559   .0165974    -3.70   0.000    -.0942655   -.0284462
+      mon_d4 |  -.0743271   .0167155    -4.45   0.000    -.1074708   -.0411834
+     fproxy1 |   2.703313    .495021     5.46   0.000     1.721778    3.684848
+     fproxy2 |     4.8731   1.129703     4.31   0.000     2.633108    7.113092
+     fproxy3 |   .0068713   1.166717     0.01   0.995    -2.306512    2.320255
+     fproxy4 |  -4.886775   2.730497    -1.79   0.076    -10.30085    .5272954
+       _cons |  -4.558865   .2935291   -15.53   0.000    -5.140879   -3.976851
+------------------------------------------------------------------------------
+
+Number of factors determined by a recursive procedure:
+    I(0) factors  = 2
+    I(1) factors  = 2
+    Maximum factors set by user = 10
+
+. 
+. /***************************************************************/
+. /* Table IV panel B */
+. pcdid lncase treated treated_post afdcben unemp empratio mon_d*, f(3)
+
+PCDID: Principal    Components              Number of obs           =     5967
+       Diff-in-Diff Regression              Number of groups        =       51
+      (by CK, *PCDID Approach*)             (Treated =      31)
+                                            (Control =      20)
+                                            Obs per group           =      117
+Method: Mean-Group (PCDID-MG)               Number of factors used  =        3
+
+------------------------------------------------------------------------------
+      lncase | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+treated_post |  -.0177397   .0079326    -2.24   0.025    -.0332873   -.0021921
+     afdcben |   .0348776   .0156754     2.22   0.026     .0041545    .0656008
+       unemp |   .0289036   .0047864     6.04   0.000     .0195223    .0382848
+    empratio |  -.1277094   .1343327    -0.95   0.342    -.3909966    .1355777
+      mon_d2 |    .021945   .0033168     6.62   0.000     .0154443    .0284458
+      mon_d3 |   .0228502   .0050695     4.51   0.000     .0129143    .0327862
+      mon_d4 |   .0138989   .0042983     3.23   0.001     .0054744    .0223235
+     fproxy1 |   2.860437   .5102908     5.61   0.000     1.860285    3.860588
+     fproxy2 |   2.626731   .5673631     4.63   0.000      1.51472    3.738742
+     fproxy3 |   1.900723   .8038855     2.36   0.018     .3251365     3.47631
+       _cons |  -4.735186   .1250082   -37.88   0.000    -4.980197   -4.490174
+------------------------------------------------------------------------------
+# of treated groups in computing the MG coefficient on treated_post = 31
+
+. gen T0p = (trend>T0+3)
+
+. pcdid lncase treated treated_post T0p afdcben unemp empratio mon_d*, f(4)
+
+PCDID: Principal    Components              Number of obs           =     5967
+       Diff-in-Diff Regression              Number of groups        =       51
+      (by CK, *PCDID Approach*)             (Treated =      31)
+                                            (Control =      20)
+                                            Obs per group           =      117
+Method: Mean-Group (PCDID-MG)               Number of factors used  =        4
+
+------------------------------------------------------------------------------
+      lncase | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+treated_post |  -.0132428   .0062385    -2.12   0.034      -.02547   -.0010155
+         T0p |  -.0001052   .0077408    -0.01   0.989     -.015277    .0150665
+     afdcben |   .0128625   .0075492     1.70   0.088    -.0019338    .0276587
+       unemp |   .0205177   .0034934     5.87   0.000     .0136707    .0273646
+    empratio |   .0431663   .1301364     0.33   0.740    -.2118963    .2982289
+      mon_d2 |   .0264896   .0037472     7.07   0.000     .0191454    .0338339
+      mon_d3 |   .0241771   .0050737     4.77   0.000     .0142329    .0341213
+      mon_d4 |   .0109259   .0044194     2.47   0.013     .0022641    .0195878
+     fproxy1 |   3.164052   .5658188     5.59   0.000     2.055067    4.273037
+     fproxy2 |    2.21919   .5658338     3.92   0.000     1.110176    3.328204
+     fproxy3 |    1.65675   .7297506     2.27   0.023     .2264647    3.087034
+     fproxy4 |  -3.203678   .6820498    -4.70   0.000    -4.540471   -1.866885
+       _cons |  -4.458808   .0891201   -50.03   0.000     -4.63348   -4.284136
+------------------------------------------------------------------------------
+# of treated groups in computing the MG coefficient on treated_post = 31
+
+. 
+. /***************************************************************/
+. /* plot Figure 1a as an example */
+. cap drop policy
+
+. gen policy = treated_post
+
+. pcdid lncase treated policy afdcben unemp empratio mon_d*, pd
+
+PCDID: Principal    Components              Number of obs           =     5967
+       Diff-in-Diff Regression              Number of groups        =       51
+      (by CK, *PCDID Approach*)             (Treated =      31)
+                                            (Control =      20)
+                                            Obs per group           =      117
+Method: Mean-Group (PCDID-MG)               Number of factors used  =        4
+
+------------------------------------------------------------------------------
+      lncase | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      policy |  -.0168484   .0071048    -2.37   0.018    -.0307736   -.0029232
+     afdcben |   .0143423   .0075024     1.91   0.056    -.0003621    .0290468
+       unemp |   .0206647   .0035431     5.83   0.000     .0137203    .0276091
+    empratio |   .0579938   .1285858     0.45   0.652    -.1940298    .3100175
+      mon_d2 |   .0261549   .0037348     7.00   0.000     .0188349    .0334749
+      mon_d3 |   .0238558   .0049483     4.82   0.000     .0141572    .0335544
+      mon_d4 |    .010369   .0042303     2.45   0.014     .0020778    .0186602
+     fproxy1 |   3.168566    .560627     5.65   0.000     2.069757    4.267375
+     fproxy2 |    2.27854   .5683153     4.01   0.000     1.164663    3.392417
+     fproxy3 |    1.72871   .7313678     2.36   0.018     .2952553    3.162164
+     fproxy4 |   -3.17232    .691836    -4.59   0.000    -4.528294   -1.816347
+       _cons |  -4.455663   .0878986   -50.69   0.000    -4.627941   -4.283385
+------------------------------------------------------------------------------
+# of treated groups in computing the MG coefficient on policy = 31
+
+Number of factors determined by a recursive procedure:
+    I(0) factors  = 2
+    I(1) factors  = 2
+    Maximum factors set by user = 10
+
+. pdd yhat
+(WARNING: if you used an IF clause in estimation to select id's,     
+          the predictions generated by pdd will be unstable.)
+Predictions generated.
+
+. replace policy = 0
+(534 real changes made)
+
+. pdd yhat0
+(WARNING: if you used an IF clause in estimation to select id's,     
+          the predictions generated by pdd will be unstable.)
+Predictions generated.
+
+. preserve
+
+. collapse lncase yhat yhat0, by(trend treated)
+
+. line lncase yhat yhat0 trend if treated==1 || line lncase trend if treated==0
+
+. restore
+
+. 
+. /***************************************************************/
+. /* plot Figure 1d as an example */
+. cap drop policy
+
+. gen policy = treated_post
+
+. pcdid lncase treated policy afdcben unemp empratio mon_d*, tr(state=="WY") nw(3) pd
+
+PCDID: Principal    Components              Number of obs           =     2457
+       Diff-in-Diff Regression              Number of groups        =       21
+      (by CK, *PCDID Approach*)             (Treated =       1)
+                                            (Control =      20)
+                                            Obs per group           =      117
+Method: Basic (PCDID-basic)                 Number of factors used  =        4
+                                            Number of NW lags used  =        3
+------------------------------------------------------------------------------
+             |             Newey–West
+      lncase | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      policy |  -.1142959   .0280812    -4.07   0.000    -.1699758   -.0586161
+     afdcben |  -.0096464   .0194555    -0.50   0.621    -.0482231    .0289303
+       unemp |  -.0303034   .0078223    -3.87   0.000    -.0458135   -.0147933
+    empratio |    -.62153   .3450325    -1.80   0.075    -1.305666    .0626057
+      mon_d2 |  -.0185256   .0129566    -1.43   0.156    -.0442162     .007165
+      mon_d3 |  -.0613559   .0165974    -3.70   0.000    -.0942655   -.0284462
+      mon_d4 |  -.0743271   .0167155    -4.45   0.000    -.1074708   -.0411834
+     fproxy1 |   2.703313    .495021     5.46   0.000     1.721778    3.684848
+     fproxy2 |     4.8731   1.129703     4.31   0.000     2.633108    7.113092
+     fproxy3 |   .0068713   1.166717     0.01   0.995    -2.306512    2.320255
+     fproxy4 |  -4.886775   2.730497    -1.79   0.076    -10.30085    .5272954
+       _cons |  -4.558865   .2935291   -15.53   0.000    -5.140879   -3.976851
+------------------------------------------------------------------------------
+
+Number of factors determined by a recursive procedure:
+    I(0) factors  = 2
+    I(1) factors  = 2
+    Maximum factors set by user = 10
+
+. pdd yhat
+(WARNING: if you used an IF clause in estimation to select id's,     
+          the predictions generated by pdd will be unstable.)
+Predictions generated.
+
+. replace policy = 0
+(534 real changes made)
+
+. pdd yhat0
+(WARNING: if you used an IF clause in estimation to select id's,     
+          the predictions generated by pdd will be unstable.)
+Predictions generated.
+
+. preserve
+
+. keep if state=="WY" | control==1
+(3,510 observations deleted)
+
+. collapse lncase yhat yhat0, by(trend treated)
+
+. line lncase yhat yhat0 trend if treated==1 || line lncase trend if treated==0
+
+. restore
+
+. 
+. /***************************************************************/
+. /* plot factor proxy (Figure A3a) as an example */
+. pcdid lncase treated treated_post afdcben unemp empratio mon_d*, alpha
+
+PCDID: Principal    Components              Number of obs           =     5967
+       Diff-in-Diff Regression              Number of groups        =       51
+      (by CK, *PCDID Approach*)             (Treated =      31)
+                                            (Control =      20)
+                                            Obs per group           =      117
+Method: Mean-Group (PCDID-MG)               Number of factors used  =        4
+
+------------------------------------------------------------------------------
+      lncase | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+treated_post |  -.0168484   .0071048    -2.37   0.018    -.0307736   -.0029232
+     afdcben |   .0143423   .0075024     1.91   0.056    -.0003621    .0290468
+       unemp |   .0206647   .0035431     5.83   0.000     .0137203    .0276091
+    empratio |   .0579938   .1285858     0.45   0.652    -.1940298    .3100175
+      mon_d2 |   .0261549   .0037348     7.00   0.000     .0188349    .0334749
+      mon_d3 |   .0238558   .0049483     4.82   0.000     .0141572    .0335544
+      mon_d4 |    .010369   .0042303     2.45   0.014     .0020778    .0186602
+     fproxy1 |   3.168566    .560627     5.65   0.000     2.069757    4.267375
+     fproxy2 |    2.27854   .5683153     4.01   0.000     1.164663    3.392417
+     fproxy3 |    1.72871   .7313678     2.36   0.018     .2952553    3.162164
+     fproxy4 |   -3.17232    .691836    -4.59   0.000    -4.528294   -1.816347
+       _cons |  -4.455663   .0878986   -50.69   0.000    -4.627941   -4.283385
+------------------------------------------------------------------------------
+# of treated groups in computing the MG coefficient on treated_post = 31
+
+Number of factors determined by a recursive procedure:
+    I(0) factors  = 2
+    I(1) factors  = 2
+    Maximum factors set by user = 10
+
+Parallel trend alpha test (Ho: alpha = 1, Ha: alpha != 1):
+    Alpha statistic =       .9918       Std. Err.  =       .1375
+    z               =     -.05936       P>|z|      =       .9527
+
+. use fproxy,clear
+
+. gen time=_n
+
+. line fproxy1 fproxy2 time
+
+. 
+. 
+. /***************************************************************/
+. /* Table A8 panel A (first-differenced model) */
+. use welfare,clear
+file welfare.dta not found
+r(601);
+
+end of do-file
+
+r(601);
+
+. log close
+      name:  <unnamed>
+       log:  \\uom-file.unimelb.edu.au\citrix\daasredirected\fbe\xiaoleiw3\Desktop\pcdid\welfare.log
+  log type:  text
+ closed on:  12 Jul 2025, 19:41:32
+-------------------------------------------------------------------------------------------------------------------------------

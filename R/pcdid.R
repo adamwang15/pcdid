@@ -11,6 +11,18 @@ grtest <- function(pca, kmax) {
   return(fproxy)
 }
 
+mg <- function(A) {
+  # A is n_var x n_unit
+  k <- nrow(A)
+  n <- ncol(A)
+  m <- rowMeans(A)
+  v <- rowSums((A - m)^2) / (n * (n - 1))
+  fake_lm <- list(coefficients = m)
+  class(fake_lm) <- "lm"
+  out <- lmtest::coeftest(fake_lm, vcov. = diag(v, k, k))
+  return(out)
+}
+
 pcdid <- function(
     formula,
     index,
@@ -88,6 +100,7 @@ pcdid <- function(
 
   # pcdid regression
   out <- list()
+  out$unit <- list()
   beta <- matrix(NA, 1 + fproxy + length(indepvar) + 1, Nt)
   beta_names <- c("(Intercept)", didvar, indepvar, paste0("fproxy", 1:fproxy))
   rownames(beta) <- beta_names
@@ -100,15 +113,26 @@ pcdid <- function(
     beta[, j] <- coef(reg)
     # TODO general standard error specification
     vcov <- sandwich::NeweyWest(reg, prewhite = FALSE, adjust = TRUE, lag = nwlag)
-    out[[id1[j]]] <- lmtest::coeftest(reg, vcov. = vcov)
+    out$unit[[id1[j]]] <- lmtest::coeftest(reg, vcov. = vcov)
   }
 
   # TODO handle NA values in beta
-  mg_beta <- rowMeans(beta)
-  mg_var <- rowSums((beta - mg_beta)^2) / (Nt * (Nt - 1))
-  fake_lm <- list(coefficients = mg_beta)
-  class(fake_lm) <- "lm"
-  out$mean_group <- lmtest::coeftest(fake_lm, vcov. = diag(mg_var))
+  out$mg <- mg(beta)
+
+  # alpha test
+  if (alpha) {
+    alpha <- matrix(NA, 1, Nt)
+    uc <- rowMeans(U)
+
+    for (j in 1:Nt) {
+      idx <- which(data1[[id]] == id1[j])
+      X1i <- as.matrix(X1[idx, ])
+      reg <- lm(y1[idx] ~ uc + X1i)
+      alpha[1, j] <- coef(reg)[2]
+    }
+
+    out$alpha <- mg(alpha)
+  }
 
   return(out)
 }

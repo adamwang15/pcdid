@@ -1,3 +1,4 @@
+# growth ratio test
 grtest <- function(pca, kmax) {
   n <- ncol(pca$x)
   T <- nrow(pca$x)
@@ -11,6 +12,7 @@ grtest <- function(pca, kmax) {
   return(fproxy)
 }
 
+# mean-gruop estimate
 mg <- function(A) {
   # A is n_var x n_unit
   k <- nrow(A)
@@ -23,6 +25,7 @@ mg <- function(A) {
   return(out)
 }
 
+#' @export
 pcdid <- function(
     formula,
     index,
@@ -68,10 +71,10 @@ pcdid <- function(
   #   U[, j] <- reg$residuals
   # }
   # u <- c(U)
+
   # 2. fixed effects regression
   X0fe <- X0
   y0fe <- y0
-  # remove individual fixed effects
   for (j in 1:Nc) {
     idx <- which(data0[[id]] == id0[j])
     means <- matrix(rep(colMeans(X0[idx, ]), T), T, byrow = TRUE)
@@ -98,6 +101,7 @@ pcdid <- function(
     #   reg <- lm(U[, j] ~ pca$x)
     #   Uf[, j] <- reg$residuals
     # }
+
     # 2. panel data regression
     reg <- lm(u ~ kronecker(rep(1, Nc), pca$x))
     Uf <- matrix(reg$residuals, T, Nc)
@@ -118,12 +122,18 @@ pcdid <- function(
   for (j in 1:Nt) {
     idx <- which(data1[[id]] == id1[j])
     X1i <- as.matrix(X1[idx, ])
+
     reg <- lm(y1[idx] ~ data1[[didvar]][idx] + X1i + F)
     names(reg$coefficients) <- beta_names
     beta[, j] <- coef(reg)
+
     vcov <- sandwich::NeweyWest(reg, prewhite = FALSE, adjust = TRUE, lag = nwlag)
-    out$treated[[id1[j]]] <- lmtest::coeftest(reg, vcov. = vcov)
+    s <- summary(reg)
+    s$coefficients <- lmtest::coeftest(reg, vcov. = vcov)
+    s$fitted.values <- reg$fitted.values
+    out$treated[[id1[j]]] <- s
   }
+
   # mean-group estimate
   out$mg <- mg(beta)
 
@@ -131,10 +141,15 @@ pcdid <- function(
   for (j in 1:Nc) {
     idx <- which(data0[[id]] == id0[j])
     X0i <- as.matrix(X0[idx, ])
+
     reg <- lm(y0[idx] ~ X1i + F)
     names(reg$coefficients) <- beta_names[-2] # no didvar
     vcov <- sandwich::NeweyWest(reg, prewhite = FALSE, adjust = TRUE, lag = nwlag)
-    out$control[[id1[j]]] <- lmtest::coeftest(reg, vcov. = vcov)
+
+    s <- summary(reg)
+    s$coefficients <- lmtest::coeftest(reg, vcov. = vcov)
+    s$fitted.values <- reg$fitted.values
+    out$control[[id1[j]]] <- s
   }
 
   # alpha test
@@ -149,10 +164,9 @@ pcdid <- function(
       alpha[1, j] <- coef(reg)[2]
     }
 
+    rownames(alpha) <- "alpha"
     out$alpha <- mg(alpha)
   }
-
-  # TODO pdd predictions (post estimation)
 
   class(out) <- "pcdid"
   return(out)

@@ -10,4 +10,3 @@ result <- pcdid(
 
 result$mg
 result$alpha
-result$control$OH

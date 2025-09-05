@@ -31,9 +31,7 @@ pcdid <- function(
     fproxy = NULL,
     stationary = FALSE,
     kmax = 10,
-    treatlist = NULL,
-    nwlag = round(max(data[[index[2]]])^0.25),
-    pdall = NULL) {
+    nwlag = round(max(data[[index[2]]])^0.25)) {
   # formula
   vars <- all.vars(formula)
   depvar <- vars[1]
@@ -86,39 +84,58 @@ pcdid <- function(
 
   # pca on residuals
   pca <- prcomp(U)
+
   # select number of factors
   if (is.null(fproxy)) {
     fproxy <- 0
     if (!stationary) {
       fproxy <- fproxy + grtest(pca, kmax)
     }
-    # TODO panel data regression
-    reg <- lm(u ~ kronecker(rep(1, ncol(pca$x)), pca$x))
-    UU <- matrix(reg$residuals, T, Nc)
-    fproxy <- fproxy + grtest(prcomp(UU), kmax)
+
+    # 1. individual time series regression
+    # Uf <- matrix(NA, T, Nc)
+    # for (j in 1:Nc) {
+    #   reg <- lm(U[, j] ~ pca$x)
+    #   Uf[, j] <- reg$residuals
+    # }
+    # 2. panel data regression
+    reg <- lm(u ~ kronecker(rep(1, Nc), pca$x))
+    Uf <- matrix(reg$residuals, T, Nc)
+    pcaf <- prcomp(Uf)
+    fproxy <- fproxy + grtest(pcaf, kmax)
   }
   F <- pca$x[, 1:fproxy] / Nc
 
   # pcdid regression
   out <- list()
-  out$unit <- list()
+  out$treated <- list()
+  out$control <- list()
   beta <- matrix(NA, 1 + fproxy + length(indepvar) + 1, Nt)
   beta_names <- c("(Intercept)", didvar, indepvar, paste0("fproxy", 1:fproxy))
   rownames(beta) <- beta_names
 
+  # treated units
   for (j in 1:Nt) {
     idx <- which(data1[[id]] == id1[j])
     X1i <- as.matrix(X1[idx, ])
     reg <- lm(y1[idx] ~ data1[[didvar]][idx] + X1i + F)
     names(reg$coefficients) <- beta_names
     beta[, j] <- coef(reg)
-    # TODO general standard error specification
     vcov <- sandwich::NeweyWest(reg, prewhite = FALSE, adjust = TRUE, lag = nwlag)
-    out$unit[[id1[j]]] <- lmtest::coeftest(reg, vcov. = vcov)
+    out$treated[[id1[j]]] <- lmtest::coeftest(reg, vcov. = vcov)
   }
-
-  # TODO handle NA values in beta
+  # mean-group estimate
   out$mg <- mg(beta)
+
+  # control units
+  for (j in 1:Nc) {
+    idx <- which(data0[[id]] == id0[j])
+    X0i <- as.matrix(X0[idx, ])
+    reg <- lm(y0[idx] ~ X1i + F)
+    names(reg$coefficients) <- beta_names[-2] # no didvar
+    vcov <- sandwich::NeweyWest(reg, prewhite = FALSE, adjust = TRUE, lag = nwlag)
+    out$control[[id1[j]]] <- lmtest::coeftest(reg, vcov. = vcov)
+  }
 
   # alpha test
   if (alpha) {
@@ -135,8 +152,8 @@ pcdid <- function(
     out$alpha <- mg(alpha)
   }
 
-  # TODO pdall reg y on X and F for control units
   # TODO pdd predictions (post estimation)
 
+  class(out) <- "pcdid"
   return(out)
 }

@@ -69,6 +69,7 @@ pcdid <- function(
   #   reg <- lm(y0[idx] ~ X0i)
   #   U[, j] <- reg$residuals
   # }
+  # u <- c(U)
   # 2. fixed effects regression
   X0fe <- X0
   y0fe <- y0
@@ -93,8 +94,8 @@ pcdid <- function(
     }
     # TODO panel data regression
     reg <- lm(u ~ kronecker(rep(1, ncol(pca$x)), pca$x))
-    U <- matrix(reg$residuals, T, Nc)
-    fproxy <- fproxy + grtest(prcomp(U), kmax)
+    UU <- matrix(reg$residuals, T, Nc)
+    fproxy <- fproxy + grtest(prcomp(UU), kmax)
   }
   F <- pca$x[, 1:fproxy] / Nc
 
@@ -127,12 +128,13 @@ pcdid <- function(
     for (j in 1:Nt) {
       idx <- which(data1[[id]] == id1[j])
       X1i <- as.matrix(X1[idx, ])
-      reg <- lm(y1[idx] ~ uc + X1i)
+      reg <- lm(y1[idx] ~ uc + data1[[didvar]][idx] + X1i)
       alpha[1, j] <- coef(reg)[2]
     }
 
     out$alpha <- mg(alpha)
   }
 
+  print(summary(uc))
   return(out)
 }

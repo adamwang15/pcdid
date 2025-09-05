@@ -135,6 +135,8 @@ pcdid <- function(
     out$alpha <- mg(alpha)
   }
 
-  print(summary(uc))
+  # TODO pdall reg y on X and F for control units
+  # TODO pdd predictions (post estimation)
+
   return(out)
 }

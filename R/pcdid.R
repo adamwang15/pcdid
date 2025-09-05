@@ -25,6 +25,7 @@ mg <- function(A) {
   return(out)
 }
 
+# TODO documentation
 #' @export
 pcdid <- function(
     formula,
@@ -108,6 +109,8 @@ pcdid <- function(
     pcaf <- prcomp(Uf)
     fproxy <- fproxy + grtest(pcaf, kmax)
   }
+
+  # factor proxies
   F <- pca$x[, 1:fproxy] / Nc
 
   # pcdid regression

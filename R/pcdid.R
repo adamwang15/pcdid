@@ -43,8 +43,8 @@ mg <- function(A) {
 #' \describe{
 #'  \item{mg}{mean-group estimate of the treatment effect}
 #'  \item{alpha}{alpha test result}
-#'  \item{treated}{regression result for treated units}
-#'  \item{control}{regression result for control units}
+#'  \item{treated}{list of treated unit regression results}
+#'  \item{control}{list of control unit regression results}
 #' }
 #'
 #' @author Xiaolei Wang \email{adamwang15@gmail.com}

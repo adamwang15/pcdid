@@ -38,8 +38,8 @@ A list of class \code{pcdid}, the output list includes element:
 \describe{
  \item{mg}{mean-group estimate of the treatment effect}
  \item{alpha}{alpha test result}
- \item{treated}{regression result for treated units}
- \item{control}{regression result for control units}
+ \item{treated}{list of treated unit regression results}
+ \item{control}{list of control unit regression results}
 }
 }
 \description{

@@ -5,8 +5,8 @@ Version: 1.0
 Date: 2025-07-12
 Authors@R: c(person("Xiaolei", "Wang", , "adamwang15@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0009-0005-6192-9061")), person("Marc", "Chan", , "marc.chan@unimelb.edu.au", role = c("aut"), comment = c(ORCID = "0000-0002-1010-7587")))
 Maintainer: Xiaolei Wang <adamwang15@gmail.com>
-Description: More about what it does (maybe more than one line).
-License: MIT + file LICENSE
+Description: Implements the Principal Components Difference-in-Differences (PCDID) estimator in Chan, M. K., & Kwok, S. S. (2022) <doi:10.1080/07350015.2021.1914636>. PCDID uses factor proxies constructed from control units to control for unobserved trends, assuming that the unobservables follow an interactive effects structure.
+License: GPL (>= 3)
 Imports:
     stats,
     sandwich,

@@ -1,0 +1,48 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# Principal Components Difference-in-Differences
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of pcdid is to ...
+
+## Installation
+
+You can install the development version of pcdid from [GitHub](https://github.com/) with:
+
+``` r
+devtools::install_github("adamwang15/pcdid")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(pcdid)
+
+# replicates Chan, M. K., & Kwok, S. S. (2022)
+result <- pcdid(
+  lncase ~ treated + treated_post + afdcben + unemp + empratio + mon_d2 + mon_d3 + mon_d4,
+  index = c("state", "trend"),
+  data = welfare,
+  alpha = TRUE
+)
+
+# mean-group estimates
+result$mg
+```

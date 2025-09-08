@@ -25,7 +25,40 @@ mg <- function(A) {
   return(out)
 }
 
-# TODO documentation
+#' @title Principal Components Difference-in-Differences
+#'
+#' @description Estimate treatment effect using the PCDID estimator.
+#'
+#' @param formula regression specification
+#' @param index vector of length 2 indicating c(id, time)
+#' @param data a data frame containing variables to be used
+#' @param alpha whether to perform the alpha test
+#' @param fproxy number of factors
+#' @param stationary whether the factors are stationary
+#' @param kmax maximum number of factors in growth ratio test
+#' @param nwlag Newey-West lag for standard error correction
+#'
+#' @return A list of class \code{pcdid}, the output list includes element:
+#'
+#' \describe{
+#'  \item{mg}{mean-group estimate of the treatment effect}
+#'  \item{alpha}{alpha test result}
+#'  \item{treated}{regression result for treated units}
+#'  \item{control}{regression result for control units}
+#' }
+#'
+#' @author Xiaolei Wang \email{adamwang15@gmail.com}
+#'
+#' @examples
+#' result <- pcdid(
+#'   lncase ~ treated + treated_post + afdcben + unemp + empratio + mon_d2 + mon_d3 + mon_d4,
+#'   index = c("state", "trend"),
+#'   data = welfare,
+#'   alpha = TRUE
+#' )
+#'
+#' result$mg
+#'
 #' @export
 pcdid <- function(
     formula,
@@ -68,7 +101,7 @@ pcdid <- function(
   # for (j in 1:Nc) {
   #   idx <- which(data0[[id]] == id0[j])
   #   X0i <- as.matrix(X0[idx, ])
-  #   reg <- lm(y0[idx] ~ X0i)
+  #   reg <- stats::lm(y0[idx] ~ X0i)
   #   U[, j] <- reg$residuals
   # }
   # u <- c(U)
@@ -82,12 +115,12 @@ pcdid <- function(
     X0fe[idx, ] <- X0fe[idx, ] - means
     y0fe[idx] <- y0fe[idx] - mean(y0[idx])
   }
-  reg <- lm(y0fe ~ 0 + X0fe)
+  reg <- stats::lm(y0fe ~ 0 + X0fe)
   u <- reg$residuals
   U <- matrix(u, T, Nc)
 
   # pca on residuals
-  pca <- prcomp(U)
+  pca <- stats::prcomp(U)
 
   # select number of factors
   if (is.null(fproxy)) {
@@ -99,14 +132,14 @@ pcdid <- function(
     # 1. individual time series regression
     # Uf <- matrix(NA, T, Nc)
     # for (j in 1:Nc) {
-    #   reg <- lm(U[, j] ~ pca$x)
+    #   reg <- stats::lm(U[, j] ~ pca$x)
     #   Uf[, j] <- reg$residuals
     # }
 
     # 2. panel data regression
-    reg <- lm(u ~ kronecker(rep(1, Nc), pca$x))
+    reg <- stats::lm(u ~ kronecker(rep(1, Nc), pca$x))
     Uf <- matrix(reg$residuals, T, Nc)
-    pcaf <- prcomp(Uf)
+    pcaf <- stats::prcomp(Uf)
     fproxy <- fproxy + grtest(pcaf, kmax)
   }
 
@@ -126,9 +159,9 @@ pcdid <- function(
     idx <- which(data1[[id]] == id1[j])
     X1i <- as.matrix(X1[idx, ])
 
-    reg <- lm(y1[idx] ~ data1[[didvar]][idx] + X1i + F)
+    reg <- stats::lm(y1[idx] ~ data1[[didvar]][idx] + X1i + F)
     names(reg$coefficients) <- beta_names
-    beta[, j] <- coef(reg)
+    beta[, j] <- stats::coef(reg)
 
     vcov <- sandwich::NeweyWest(reg, prewhite = FALSE, adjust = TRUE, lag = nwlag)
     s <- summary(reg)
@@ -145,7 +178,7 @@ pcdid <- function(
     idx <- which(data0[[id]] == id0[j])
     X0i <- as.matrix(X0[idx, ])
 
-    reg <- lm(y0[idx] ~ X1i + F)
+    reg <- stats::lm(y0[idx] ~ X1i + F)
     names(reg$coefficients) <- beta_names[-2] # no didvar
     vcov <- sandwich::NeweyWest(reg, prewhite = FALSE, adjust = TRUE, lag = nwlag)
 
@@ -163,8 +196,8 @@ pcdid <- function(
     for (j in 1:Nt) {
       idx <- which(data1[[id]] == id1[j])
       X1i <- as.matrix(X1[idx, ])
-      reg <- lm(y1[idx] ~ uc + data1[[didvar]][idx] + X1i)
-      alpha[1, j] <- coef(reg)[2]
+      reg <- stats::lm(y1[idx] ~ uc + data1[[didvar]][idx] + X1i)
+      alpha[1, j] <- stats::coef(reg)[2]
     }
 
     rownames(alpha) <- "alpha"

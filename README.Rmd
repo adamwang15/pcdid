@@ -59,14 +59,14 @@ To access the alpha test result
 result$alpha
 ```
 
-To access list of treated unit estimates
+To access an individual treated unit estimate
 
 ```{r}
-result$treated
+result$treated$WY$coefficients
 ```
 
-To access list of control unit estimates
+To access an individual control unit estimate
 
 ```{r}
-result$control
+result$control$OH$coefficients
 ```

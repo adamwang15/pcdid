@@ -5,7 +5,7 @@
 \alias{pcdid-package}
 \title{pcdid: Principal Components Difference-in-Differences}
 \description{
-pcdid implements factor-augmented difference-in-differences (DID) estimation. It is useful in situations where the user suspects that trends may be unparallel and/or stochastic among control and treated units. The data structure is similar to that in a DID setup. The estimation method is regression-based and can be considered as an extension of conventional DID regressions. pcdid also implements a parallel trend alpha test (based on an interactive effects structure) and a recursive procedure that determines the number of factors automatically. For further details, please see Chan and Kwok (2016, 2020) who developed the pcdid approach and the alpha test.
+This package implements factor-augmented difference-in-differences (DID) estimation. It is useful in situations where the user suspects that trends may be unparallel and/or stochastic among control and treated units. The data structure is similar to that in a DID setup. The estimation method is regression-based and can be considered as an extension of conventional DID regressions. pcdid also implements a parallel trend alpha test (based on an interactive effects structure) and a recursive procedure that determines the number of factors automatically. For further details, please see Chan and Kwok (2016, 2020) who developed the pcdid approach and the alpha test.
 }
 \seealso{
 Useful links:

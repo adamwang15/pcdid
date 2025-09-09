@@ -27,16 +27,16 @@ mg <- function(A) {
 
 #' @title Principal Components Difference-in-Differences
 #'
-#' @description Estimate treatment effect using the PCDID estimator.
+#' @description pcdid first uses a data-driven method (based on principal component analysis) on the control panel to compute factor proxies, which capture the unobserved trends. Then, among treated unit(s), it runs regression(s) using the factor proxies as extra covariates.  Analogous to a control function approach, these extra covariates capture the endogeneity arising from potentially unparallel trends.
 #'
-#' @param formula regression specification
+#' @param formula regression specification: depvar ~ treatvar + didvar + indepvar
 #' @param index vector of length 2 indicating c(id, time)
 #' @param data a data frame containing variables to be used
-#' @param alpha whether to perform the alpha test
-#' @param fproxy number of factors
-#' @param stationary whether the factors are stationary
-#' @param kmax maximum number of factors in growth ratio test
-#' @param nwlag Newey-West lag for standard error correction
+#' @param alpha perform the parallel trend alpha test. (Note: irrelevant if there is only one treated unit.)
+#' @param fproxy set number of factors used. If this option is not specified, the number of factors will be automatically determined by the recursive factor number test.
+#' @param stationary advanced option: assume all factors are stationary in the recursive factor number test. (Note: irrelevant if fproxy(#) is specified.)
+#' @param kmax advanced option: set maximum number of factors in the recursive factor number test; default is 10. (Note: irrelevant if fproxy(#) is specified.)
+#' @param nwlag set maximum lag order of autocorrelation in computing Newey-West standard errors; default is int(T^0.25). (Note: irrelevant if there is more than one treated unit.)
 #'
 #' @return A list of class \code{pcdid}, the output list includes element:
 #'
@@ -115,7 +115,11 @@ pcdid <- function(
     X0fe[idx, ] <- X0fe[idx, ] - means
     y0fe[idx] <- y0fe[idx] - mean(y0[idx])
   }
-  reg <- stats::lm(y0fe ~ 0 + X0fe)
+  if (ncol(X0fe) == 0) {
+    reg <- stats::lm(y0fe ~ 1)
+  } else {
+    reg <- stats::lm(y0fe ~ 0 + X0fe)
+  }
   u <- reg$residuals
   U <- matrix(u, T, Nc)
 
@@ -159,7 +163,11 @@ pcdid <- function(
     idx <- which(data1[[id]] == id1[j])
     X1i <- as.matrix(X1[idx, ])
 
-    reg <- stats::lm(y1[idx] ~ data1[[didvar]][idx] + X1i + F)
+    if (ncol(X1i) == 0) {
+      reg <- stats::lm(y1[idx] ~ data1[[didvar]][idx] + F)
+    } else {
+      reg <- stats::lm(y1[idx] ~ data1[[didvar]][idx] + X1i + F)
+    }
     names(reg$coefficients) <- beta_names
     beta[, j] <- stats::coef(reg)
 
@@ -178,7 +186,11 @@ pcdid <- function(
     idx <- which(data0[[id]] == id0[j])
     X0i <- as.matrix(X0[idx, ])
 
-    reg <- stats::lm(y0[idx] ~ X1i + F)
+    if (ncol(X1i) == 0) {
+      reg <- stats::lm(y0[idx] ~ F)
+    } else {
+      reg <- stats::lm(y0[idx] ~ X1i + F)
+    }
     names(reg$coefficients) <- beta_names[-2] # no didvar
     vcov <- sandwich::NeweyWest(reg, prewhite = FALSE, adjust = TRUE, lag = nwlag)
 
@@ -196,7 +208,11 @@ pcdid <- function(
     for (j in 1:Nt) {
       idx <- which(data1[[id]] == id1[j])
       X1i <- as.matrix(X1[idx, ])
-      reg <- stats::lm(y1[idx] ~ uc + data1[[didvar]][idx] + X1i)
+      if (ncol(X1i) == 0) {
+        reg <- stats::lm(y1[idx] ~ uc + data1[[didvar]][idx])
+      } else {
+        reg <- stats::lm(y1[idx] ~ uc + data1[[didvar]][idx] + X1i)
+      }
       alpha[1, j] <- stats::coef(reg)[2]
     }
 

@@ -16,21 +16,21 @@ pcdid(
 )
 }
 \arguments{
-\item{formula}{regression specification}
+\item{formula}{regression specification: depvar ~ treatvar + didvar + indepvar}
 
 \item{index}{vector of length 2 indicating c(id, time)}
 
 \item{data}{a data frame containing variables to be used}
 
-\item{alpha}{whether to perform the alpha test}
+\item{alpha}{perform the parallel trend alpha test. (Note: irrelevant if there is only one treated unit.)}
 
-\item{fproxy}{number of factors}
+\item{fproxy}{set number of factors used. If this option is not specified, the number of factors will be automatically determined by the recursive factor number test.}
 
-\item{stationary}{whether the factors are stationary}
+\item{stationary}{advanced option: assume all factors are stationary in the recursive factor number test. (Note: irrelevant if fproxy(#) is specified.)}
 
-\item{kmax}{maximum number of factors in growth ratio test}
+\item{kmax}{advanced option: set maximum number of factors in the recursive factor number test; default is 10. (Note: irrelevant if fproxy(#) is specified.)}
 
-\item{nwlag}{Newey-West lag for standard error correction}
+\item{nwlag}{set maximum lag order of autocorrelation in computing Newey-West standard errors; default is int(T^0.25). (Note: irrelevant if there is more than one treated unit.)}
 }
 \value{
 A list of class \code{pcdid}, the output list includes element:
@@ -43,7 +43,7 @@ A list of class \code{pcdid}, the output list includes element:
 }
 }
 \description{
-Estimate treatment effect using the PCDID estimator.
+pcdid first uses a data-driven method (based on principal component analysis) on the control panel to compute factor proxies, which capture the unobserved trends. Then, among treated unit(s), it runs regression(s) using the factor proxies as extra covariates.  Analogous to a control function approach, these extra covariates capture the endogeneity arising from potentially unparallel trends.
 }
 \examples{
 result <- pcdid(

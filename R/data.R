@@ -6,24 +6,24 @@
 #'
 #' @format A data frame
 #' \describe{
-#'   \item{state}{TODO}
-#'   \item{statenum}{TODO}
-#'   \item{trend}{TODO}
-#'   \item{treated}{TODO}
-#'   \item{treated_post}{TODO}
+#'   \item{state}{state name}
+#'   \item{statenum}{state id}
+#'   \item{trend}{time trend}
+#'   \item{treated}{1 if the state is treated, 0 otherwise}
+#'   \item{treated_post}{1 if the state is treated and time is after treatment, 0 otherwise}
 #'   \item{lncase}{TODO}
 #'   \item{afdcben}{TODO}
-#'   \item{unemp}{TODO}
-#'   \item{empratio}{TODO}
-#'   \item{mon_d2}{TODO}
-#'   \item{mon_d3}{TODO}
-#'   \item{mon_d4}{TODO}
-#'   \item{caseload}{TODO}
-#'   \item{popn}{TODO}
-#'   \item{empratio_raw}{TODO}
-#'   \item{south}{TODO}
-#'   \item{control}{TODO}
-#'   \item{T0}{TODO}
+#'   \item{unemp}{unemployment rate}
+#'   \item{empratio}{employment ratio}
+#'   \item{mon_d2}{seasonal dummies}
+#'   \item{mon_d3}{seasonal dummies}
+#'   \item{mon_d4}{seasonal dummies}
+#'   \item{caseload}{welfare caseload}
+#'   \item{popn}{population}
+#'   \item{empratio_raw}{raw employment ratio}
+#'   \item{south}{1 if the state is in the south, 0 otherwise}
+#'   \item{control}{1 if the state is a control unit, 0 otherwise}
+#'   \item{T0}{time period before treatment}
 #' }
 #'
 #' @references

@@ -18,7 +18,7 @@ mg <- function(A) {
   k <- nrow(A)
   n <- ncol(A)
   m <- rowMeans(A, na.rm = TRUE)
-  v <- rowSums((A - m)^2) / (n * (n - 1))
+  v <- rowSums((A - m)^2, na.rm = TRUE) / (n * (n - 1))
   fake_lm <- list(coefficients = m)
   class(fake_lm) <- "lm"
   out <- lmtest::coeftest(fake_lm, vcov. = diag(v, k, k))

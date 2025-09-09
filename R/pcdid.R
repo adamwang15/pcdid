@@ -17,7 +17,7 @@ mg <- function(A) {
   # A is n_var x n_unit
   k <- nrow(A)
   n <- ncol(A)
-  m <- rowMeans(A)
+  m <- rowMeans(A, na.rm = TRUE)
   v <- rowSums((A - m)^2) / (n * (n - 1))
   fake_lm <- list(coefficients = m)
   class(fake_lm) <- "lm"
@@ -111,7 +111,7 @@ pcdid <- function(
   y0fe <- y0
   for (j in 1:Nc) {
     idx <- which(data0[[id]] == id0[j])
-    means <- matrix(rep(colMeans(X0[idx, ]), T), T, byrow = TRUE)
+    means <- matrix(rep(colMeans(X0[idx, ], na.rm = TRUE), T), T, byrow = TRUE)
     X0fe[idx, ] <- X0fe[idx, ] - means
     y0fe[idx] <- y0fe[idx] - mean(y0[idx])
   }
@@ -203,7 +203,7 @@ pcdid <- function(
   # alpha test
   if (alpha) {
     alpha <- matrix(NA, 1, Nt)
-    uc <- rowMeans(U)
+    uc <- rowMeans(U, na.rm = TRUE)
 
     for (j in 1:Nt) {
       idx <- which(data1[[id]] == id1[j])

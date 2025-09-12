@@ -209,6 +209,7 @@ pcdid <- function(
     s <- summary(reg)
     s$coefficients <- lmtest::coeftest(reg, vcov. = vcov)
     s$fitted.values <- reg$fitted.values
+    s$call$formula <- formula
     out$treated[[id1[j]]] <- s
   }
 
@@ -232,6 +233,7 @@ pcdid <- function(
     s <- summary(reg)
     s$coefficients <- lmtest::coeftest(reg, vcov. = vcov)
     s$fitted.values <- reg$fitted.values
+    s$call$formula <- formula
     out$control[[id1[j]]] <- s
   }
 

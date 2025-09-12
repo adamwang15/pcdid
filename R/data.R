@@ -1,6 +1,6 @@
 #' @title Welfare caseloads data
 #'
-#' @description A sample data to examine the effects of welfare waiver programs on welfare caseloads in the United States.
+#' @description A sample dataset to examine the effects of welfare waiver programs on welfare caseloads in the United States.
 #'
 #' @usage data(welfare)
 #'
@@ -8,22 +8,22 @@
 #' \describe{
 #'   \item{state}{state name}
 #'   \item{statenum}{state id}
-#'   \item{trend}{time trend}
+#'   \item{trend}{time trend in months (oct1986 = 1, nov1986 = 2, etc.)}
 #'   \item{treated}{1 if the state is treated, 0 otherwise}
-#'   \item{treated_post}{1 if the state is treated and time is after treatment, 0 otherwise}
-#'   \item{lncase}{TODO}
-#'   \item{afdcben}{TODO}
+#'   \item{treated_post}{1 if the state is treated and post-intervention, 0 otherwise}
+#'   \item{lncase}{Natural log of per-capita welfare caseload}
+#'   \item{afdcben}{Maximum combined AFDC/Food Stamps benefits for a family of three (in hundred dollar per month)}
 #'   \item{unemp}{unemployment rate}
-#'   \item{empratio}{employment ratio}
-#'   \item{mon_d2}{seasonal dummies}
-#'   \item{mon_d3}{seasonal dummies}
-#'   \item{mon_d4}{seasonal dummies}
+#'   \item{empratio}{Natural log of employment-to-population ratio}
+#'   \item{mon_d2}{seasonal dummy (apr-jun)}
+#'   \item{mon_d3}{seasonal dummy (jul-sep}
+#'   \item{mon_d4}{seasonal dummy (oct-dec)}
 #'   \item{caseload}{welfare caseload}
 #'   \item{popn}{population}
-#'   \item{empratio_raw}{raw employment ratio}
+#'   \item{empratio_raw}{raw employment-to-population ratio}
 #'   \item{south}{1 if the state is in the south, 0 otherwise}
 #'   \item{control}{1 if the state is a control unit, 0 otherwise}
-#'   \item{T0}{time period before treatment}
+#'   \item{T0}{Number of preintervention periods for the state (=117 if control state)}
 #' }
 #'
 #' @references

@@ -25,6 +25,23 @@ mg <- function(A) {
   return(out)
 }
 
+split_formula <- function(formula) {
+  y <- all.vars(formula[[2]])
+  rhs <- formula[[3]]
+
+  if (rhs[[1]] == "|") {
+    x <- all.vars(rhs[[2]])
+    z <- all.vars(rhs[[3]])
+  } else {
+    x <- all.vars(rhs)
+    z <- NULL
+  }
+
+  out <- list(y = y, x = x, z = z)
+
+  return(out)
+}
+
 #' @title Principal Components Difference-in-Differences
 #'
 #' @description pcdid first uses a data-driven method (based on principal component analysis) on the control panel to compute factor proxies, which capture the unobserved trends. Then, among treated unit(s), it runs regression(s) using the factor proxies as extra covariates.  Analogous to a control function approach, these extra covariates capture the endogeneity arising from potentially unparallel trends.
@@ -70,11 +87,17 @@ pcdid <- function(
     kmax = 10,
     nwlag = round(max(data[[index[2]]])^0.25)) {
   # formula
-  vars <- all.vars(formula)
-  depvar <- vars[1]
-  treatvar <- vars[2]
-  didvar <- vars[3]
-  indepvar <- vars[-(1:3)]
+  vars <- split_formula(formula)
+  depvar <- vars$y
+  treatvar <- vars$x[1]
+  didvar <- vars$x[2]
+  indepvar <- vars$x[-(1:2)]
+  residvar <- vars$z
+  if (is.null(residvar)) {
+    residvar <- indepvar
+  }
+
+  # index
   id <- index[1]
   time <- index[2]
 
@@ -83,7 +106,7 @@ pcdid <- function(
   data0 <- data[data[[treatvar]] == 0, ]
   data1 <- data[data[[treatvar]] == 1, ]
 
-  X0 <- as.matrix(data0[, indepvar])
+  X0 <- as.matrix(data0[, residvar])
   X1 <- as.matrix(data1[, indepvar])
 
   y0 <- data0[[depvar]]

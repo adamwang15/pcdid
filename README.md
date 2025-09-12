@@ -7,7 +7,7 @@
 
 <!-- badges: end -->
 
-pcdid implements factor-augmented difference-in-differences (DID)
+This package implements factor-augmented difference-in-differences (DID)
 estimation. It is useful in situations where the user suspects that
 trends may be unparallel and/or stochastic among control and treated
 units. The data structure is similar to that in a DID setup.
@@ -114,17 +114,17 @@ result$control$OH$coefficients
 #> t test of coefficients:
 #> 
 #>               Estimate Std. Error  t value  Pr(>|t|)    
-#> (Intercept) -4.4479234  0.1807386 -24.6097 < 2.2e-16 ***
-#> afdcben      0.0285303  0.0192942   1.4787 0.1421858    
-#> unemp        0.0081524  0.0054983   1.4827 0.1411130    
-#> empratio    -0.1281184  0.3381070  -0.3789 0.7054989    
-#> mon_d2       0.0217046  0.0104066   2.0857 0.0394098 *  
-#> mon_d3       0.0372120  0.0102360   3.6354 0.0004301 ***
-#> mon_d4       0.0029270  0.0090809   0.3223 0.7478383    
-#> fproxy1     -4.1339209  0.2866713 -14.4204 < 2.2e-16 ***
-#> fproxy2     -6.1163076  1.4065816  -4.3483 3.162e-05 ***
-#> fproxy3     11.6217469  1.7301763   6.7171 9.528e-10 ***
-#> fproxy4     -0.9188375  0.9971030  -0.9215 0.3588783    
+#> (Intercept) -4.1981999  0.1119283 -37.5079 < 2.2e-16 ***
+#> afdcben      0.0333233  0.0051964   6.4127 4.068e-09 ***
+#> unemp        0.0482666  0.0055919   8.6315 6.645e-14 ***
+#> empratio     0.5510229  0.1854242   2.9717  0.003665 ** 
+#> mon_d2       0.0275807  0.0054598   5.0516 1.836e-06 ***
+#> mon_d3       0.0553877  0.0071581   7.7377 6.249e-12 ***
+#> mon_d4       0.0357344  0.0061858   5.7769 7.701e-08 ***
+#> fproxy1     -4.5719351  0.1996360 -22.9014 < 2.2e-16 ***
+#> fproxy2     -8.1910637  0.8168225 -10.0280 < 2.2e-16 ***
+#> fproxy3     10.9875132  0.7484328  14.6807 < 2.2e-16 ***
+#> fproxy4     -1.0994630  0.8806680  -1.2484  0.214620    
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```

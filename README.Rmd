@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-pcdid implements factor-augmented difference-in-differences (DID) estimation. It is useful in situations where the user suspects that trends may be unparallel and/or stochastic among control and treated units. The data structure is similar to that in a DID setup.
+This package implements factor-augmented difference-in-differences (DID) estimation. It is useful in situations where the user suspects that trends may be unparallel and/or stochastic among control and treated units. The data structure is similar to that in a DID setup.
 
 The estimation method is regression-based and can be considered as an extension of conventional DID regressions. pcdid also implements a parallel trend alpha test (based on an interactive effects structure) and a recursive procedure that determines the number of factors automatically.
 

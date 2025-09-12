@@ -46,7 +46,7 @@ split_formula <- function(formula) {
 #'
 #' @description pcdid first uses a data-driven method (based on principal component analysis) on the control panel to compute factor proxies, which capture the unobserved trends. Then, among treated unit(s), it runs regression(s) using the factor proxies as extra covariates.  Analogous to a control function approach, these extra covariates capture the endogeneity arising from potentially unparallel trends.
 #'
-#' @param formula regression specification: depvar ~ treatvar + didvar + indepvar
+#' @param formula regression specification: depvar ~ treatvar + didvar + indepvar | residvar, where depvar is the dependent variable, treatvar is the binary treatment indicator (1 for treated unit(s) and 0 for control unit(s)), didvar is the interaction term of treatvar and post-treatment time indicator, indepvar is a vector of other independent variables, and residvar is a vector of variables used to compute residuals from control units, if residvar is not specified, indepvar will be used
 #' @param index vector of length 2 indicating c(id, time)
 #' @param data a data frame containing variables to be used
 #' @param alpha perform the parallel trend alpha test. (Note: irrelevant if there is only one treated unit.)
@@ -67,13 +67,24 @@ split_formula <- function(formula) {
 #' @author Xiaolei Wang \email{adamwang15@gmail.com}
 #'
 #' @examples
+#' # use all control variables to compute residuals
 #' result <- pcdid(
-#'   lncase ~ treated + treated_post + afdcben + unemp + empratio + mon_d2 + mon_d3 + mon_d4,
+#'   lncase ~ treated + treated_post +
+#'     afdcben + unemp + empratio + mon_d2 + mon_d3 + mon_d4,
 #'   index = c("state", "trend"),
 #'   data = welfare,
 #'   alpha = TRUE
 #' )
+#' result$mg
 #'
+#' # use no control variable to compute residuals
+#' result <- pcdid(
+#'   lncase ~ treated + treated_post +
+#'     afdcben + unemp + empratio + mon_d2 + mon_d3 + mon_d4 | NULL,
+#'   index = c("state", "trend"),
+#'   data = welfare,
+#'   alpha = TRUE
+#' )
 #' result$mg
 #'
 #' @export
@@ -205,14 +216,15 @@ pcdid <- function(
   out$mg <- mg(beta)
 
   # control units
+  X0 <- as.matrix(data0[, indepvar]) # change to indepvar
   for (j in 1:Nc) {
     idx <- which(data0[[id]] == id0[j])
     X0i <- as.matrix(X0[idx, ])
 
-    if (ncol(X1i) == 0) {
+    if (ncol(X0i) == 0) {
       reg <- stats::lm(y0[idx] ~ F)
     } else {
-      reg <- stats::lm(y0[idx] ~ X1i + F)
+      reg <- stats::lm(y0[idx] ~ X0i + F)
     }
     names(reg$coefficients) <- beta_names[-2] # no didvar
     vcov <- sandwich::NeweyWest(reg, prewhite = FALSE, adjust = TRUE, lag = nwlag)

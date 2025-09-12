@@ -16,7 +16,7 @@ pcdid(
 )
 }
 \arguments{
-\item{formula}{regression specification: depvar ~ treatvar + didvar + indepvar}
+\item{formula}{regression specification: depvar ~ treatvar + didvar + indepvar | residvar, where depvar is the dependent variable, treatvar is the binary treatment indicator (1 for treated unit(s) and 0 for control unit(s)), didvar is the interaction term of treatvar and post-treatment time indicator, indepvar is a vector of other independent variables, and residvar is a vector of variables used to compute residuals from control units, if residvar is not specified, indepvar will be used}
 
 \item{index}{vector of length 2 indicating c(id, time)}
 
@@ -46,13 +46,24 @@ A list of class \code{pcdid}, the output list includes element:
 pcdid first uses a data-driven method (based on principal component analysis) on the control panel to compute factor proxies, which capture the unobserved trends. Then, among treated unit(s), it runs regression(s) using the factor proxies as extra covariates.  Analogous to a control function approach, these extra covariates capture the endogeneity arising from potentially unparallel trends.
 }
 \examples{
+# use all control variables to compute residuals
 result <- pcdid(
-  lncase ~ treated + treated_post + afdcben + unemp + empratio + mon_d2 + mon_d3 + mon_d4,
+  lncase ~ treated + treated_post +
+    afdcben + unemp + empratio + mon_d2 + mon_d3 + mon_d4,
   index = c("state", "trend"),
   data = welfare,
   alpha = TRUE
 )
+result$mg
 
+# use no control variable to compute residuals
+result <- pcdid(
+  lncase ~ treated + treated_post +
+    afdcben + unemp + empratio + mon_d2 + mon_d3 + mon_d4 | NULL,
+  index = c("state", "trend"),
+  data = welfare,
+  alpha = TRUE
+)
 result$mg
 
 }

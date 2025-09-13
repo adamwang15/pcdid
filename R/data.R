@@ -30,5 +30,6 @@
 #' Chan, M. K., & Kwok, S. S. (2022). The PCDID approach: difference-in-differences when trends are potentially unparallel and stochastic. Journal of Business & Economic Statistics, 40(3), 1216-1233.
 #'
 #' @source
-#' Supplemental material, \url{https://doi.org/10.1080/07350015.2021.1914636}
+#' Supplemental material, \doi{10.1080/07350015.2021.1914636}
+#'
 "welfare"

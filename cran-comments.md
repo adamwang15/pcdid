@@ -1,5 +1,7 @@
-## R CMD check results
+## The package abbrevation pcdid is removed from the DESCRIPTION file.
 
-0 errors | 0 warnings | 1 note
+## DESCRIPTION file does not start with "This package" anymore.
 
-* This is a new release.
+## <doi:10.1080/07350015.2021.1914636> is added to the DESCRIPTION file.
+
+## \doi{10.1080/07350015.2021.1914636} is added in the help file for welfare.

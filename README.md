@@ -7,7 +7,7 @@
 
 <!-- badges: end -->
 
-This package implements factor-augmented difference-in-differences (DID)
+pcdid implements factor-augmented difference-in-differences (DID)
 estimation. It is useful in situations where the user suspects that
 trends may be unparallel and/or stochastic among control and treated
 units. The data structure is similar to that in a DID setup.

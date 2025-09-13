@@ -2,10 +2,10 @@ Package: pcdid
 Type: Package
 Title: Principal Components Difference-in-Differences
 Version: 1.0.0
-Date: 2025-09-09
+Date: 2025-09-13
 Authors@R: c(person("Marc", "Chan", , "marc.chan@unimelb.edu.au", role = c("aut"), comment = c(ORCID = "0000-0002-1010-7587")), person("Xiaolei", "Wang", , "adamwang15@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0009-0005-6192-9061")))
 Maintainer: Xiaolei Wang <adamwang15@gmail.com>
-Description: This package implements factor-augmented difference-in-differences (DID) estimation. It is useful in situations where the user suspects that trends may be unparallel and/or stochastic among control and treated units. The data structure is similar to that in a DID setup. The estimation method is regression-based and can be considered as an extension of conventional DID regressions. pcdid also implements a parallel trend alpha test (based on an interactive effects structure) and a recursive procedure that determines the number of factors automatically. For further details, please see Chan and Kwok (2016, 2020) who developed the pcdid approach and the alpha test.
+Description: Implements the Principal Components Difference-in-Differences estimators as described in Chan, M. K., & Kwok, S. S. (2022) <doi:10.1080/07350015.2021.1914636>.
 License: GPL (>= 3)
 Imports:
     stats,

@@ -28,7 +28,7 @@ A data frame
 }
 }
 \source{
-Supplemental material, \url{https://doi.org/10.1080/07350015.2021.1914636}
+Supplemental material, \doi{10.1080/07350015.2021.1914636}
 }
 \usage{
 data(welfare)

@@ -1,7 +1,7 @@
 Package: pcdid
 Type: Package
 Title: Principal Components Difference-in-Differences
-Version: 1.0.0
+Version: 1.0.0.9000
 Date: 2025-09-13
 Authors@R: c(person("Marc", "Chan", , "marc.chan@unimelb.edu.au", role = c("aut"), comment = c(ORCID = "0000-0002-1010-7587")), person("Xiaolei", "Wang", , "adamwang15@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0009-0005-6192-9061")))
 Maintainer: Xiaolei Wang <adamwang15@gmail.com>

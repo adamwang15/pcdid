@@ -97,6 +97,13 @@ pcdid <- function(
     stationary = FALSE,
     kmax = 10,
     nwlag = round(max(data[[index[2]]])^0.25)) {
+  # check inputs
+  if (length(all.vars(formula)) < 3) {
+    stop("Formula must include at least 3 variables: depvar ~ treatvar + didvar.")
+  }
+  if (length(index) != 2) {
+    stop("Index must be a vector of length 2 indicating c(id, time).")
+  }
   # formula
   vars <- split_formula(formula)
   depvar <- vars$y

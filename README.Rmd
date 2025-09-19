@@ -26,6 +26,12 @@ For further details, please see Chan and Kwok (2022) who developed the pcdid app
 
 ## Installation
 
+You can install the released version of pcdid from CRAN with:
+
+``` r
+install.packages("pcdid")
+```
+
 You can install the development version of pcdid from [GitHub](https://github.com/) with:
 
 ``` r

@@ -23,6 +23,12 @@ pcdid approach and the alpha test.
 
 ## Installation
 
+You can install the released version of pcdid from CRAN with:
+
+``` r
+install.packages("pcdid")
+```
+
 You can install the development version of pcdid from
 [GitHub](https://github.com/) with:
 

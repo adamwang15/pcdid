@@ -38,7 +38,7 @@ You can install the development version of pcdid from [GitHub](https://github.co
 devtools::install_github("adamwang15/pcdid")
 ```
 
-## Example
+## Example for PCDID
 
 This is a basic example which replicates Chan and Kwok (2022)
 
@@ -75,4 +75,47 @@ To access an individual control unit estimate
 
 ```{r}
 result$control$OH$coefficients
+```
+
+## Example for SFDID
+
+This is an example for the SFDID estimator:
+
+```{r sfdid_example}
+library(pcdid)
+
+data(welfare)
+
+states_orig <- sort(unique(welfare$state))
+treated_flag_orig <- sapply(states_orig, function(s) any(welfare$treated[welfare$state == s] == 1))
+states <- c(states_orig[treated_flag_orig], states_orig[!treated_flag_orig])
+states <- c("WY", states[-31]) # Move WY to first position
+
+W <- generate_W(states)
+welfare$const <- 1
+
+res <- sfdid(
+  lncase ~ treated + treated_post + const,
+  index = c("state", "trend"),
+  data = welfare,
+  W = W,
+  npc_method = 2,
+  kmax_y = 2,
+  kmax_c = 2,
+  qml_iters = 15,
+  tol_bhat = 1e-4,
+  rho_hetero = 1
+)
+```
+
+To access the average direct treatment effect on the treated (ADTET):
+
+```{r}
+res$adte
+```
+
+To access the spatial parameters (rho):
+
+```{r}
+res$rhat
 ```

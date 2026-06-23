@@ -10,7 +10,8 @@ License: GPL (>= 3)
 Imports:
     stats,
     sandwich,
-    lmtest
+    lmtest,
+    MASS
 Depends: 
     R (>= 3.5)
 LazyData: true

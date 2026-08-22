@@ -142,8 +142,6 @@ sfdid <- function(
         Nt = Nt,
         rho_hetero = rho_hetero,
         method = "L-BFGS-B",
-        lower = rep(-0.99, 4),
-        upper = rep(0.99, 4),
         hessian = TRUE
       )
     } else {
@@ -156,8 +154,6 @@ sfdid <- function(
         Nt = Nt,
         rho_hetero = rho_hetero,
         method = "L-BFGS-B",
-        lower = rep(-0.99, 4),
-        upper = rep(0.99, 4),
         hessian = TRUE
       )
     }

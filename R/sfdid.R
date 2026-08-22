@@ -254,9 +254,9 @@ sfdid <- function(
       reg_x <- cbind(time_dummy, upc, x_i)
       reg_u <- as.numeric(S[i, ] %*% y)
     }
-    res <- regress_full(reg_u, reg_x)
-    delta[i] <- res$b[1]
-    se_delta[i] <- res$bse[1]
+    fit <- stats::lm(reg_u ~ reg_x - 1)
+    delta[i] <- stats::coef(fit)[1]
+    se_delta[i] <- sqrt(diag(stats::vcov(fit)))[1]
   }
   
   # Spillover Calculations
@@ -314,8 +314,8 @@ sfdid <- function(
         x_i <- matrix(x_arr[i, , ], nrow = T, ncol = K)
         reg_x <- cbind(time_dummy, upc_p, x_i)
       }
-      res_p <- regress_full(uhat_p[i, ], reg_x)
-      delta_p[i] <- res_p$b[1]
+      fit_p <- stats::lm(uhat_p[i, ] ~ reg_x - 1)
+      delta_p[i] <- stats::coef(fit_p)[1]
     }
     
     ete_p_tmp <- solve(S_p, c(delta_p, rep(0, Nc)))
@@ -334,21 +334,48 @@ sfdid <- function(
   
   # --- Pack Outputs ---
   out <- list()
-  out$rhat <- rhat
-  out$se_rhat <- se_rhat
-  out$bhat <- bhat
-  out$se_bhat <- se_bhat
-  out$ghat <- ghat
-  out$se_ghat <- se_ghat
-  out$delta <- delta
-  out$se_delta <- se_delta
-  out$adte <- adte
-  out$se_adte <- se_adte
-  out$aete <- aete
-  out$se_aete <- se_aete_adj
-  out$aetc <- aetc
-  out$se_aetc <- se_aetc_adj
-  out$llout <- llout
+  
+  out$rho <- create_coeftest(rhat, se_rhat, c("rho_EE", "rho_EC", "rho_CE", "rho_CC"))
+  
+  # Aggregate effects
+  mg_eff <- c(adte, aete, aetc)
+  se_mg_eff <- c(se_adte, se_aete_adj, se_aetc_adj)
+  out$mg <- create_coeftest(mg_eff, se_mg_eff, c("ADTET", "AETET", "AETEC"))
+  
+  # Individual lists
+  out$treated <- list()
+  for (i in 1:Nt) {
+    ests <- c()
+    ses <- c()
+    nms <- c()
+    if (withx) {
+      ests <- c(ests, bhat[, i])
+      ses <- c(ses, se_bhat[, i])
+      nms <- c(nms, paste0("Beta_", 1:K))
+    }
+    ests <- c(ests, ghat[, i], delta[i])
+    ses <- c(ses, se_ghat[, i], se_delta[i])
+    nms <- c(nms, paste0("Gamma_", 1:actual_npcy), "Delta")
+    
+    out$treated[[i]] <- create_coeftest(ests, ses, nms)
+  }
+  
+  out$control <- list()
+  for (i in (Nt + 1):N) {
+    ests <- c()
+    ses <- c()
+    nms <- c()
+    if (withx) {
+      ests <- c(ests, bhat[, i])
+      ses <- c(ses, se_bhat[, i])
+      nms <- c(nms, paste0("Beta_", 1:K))
+    }
+    ests <- c(ests, ghat[, i])
+    ses <- c(ses, se_ghat[, i])
+    nms <- c(nms, paste0("Gamma_", 1:actual_npcy))
+    
+    out$control[[i - Nt]] <- create_coeftest(ests, ses, nms)
+  }
   
   class(out) <- "sfdid"
   return(out)

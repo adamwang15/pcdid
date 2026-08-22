@@ -146,13 +146,18 @@ nll_i_nox <- function(pa, Y, W, f, Nt, rho_hetero) {
   return(fout)
 }
 
-regress_full <- function(y, x) {
-  b <- solve(crossprod(x), crossprod(x, y))
-  yhat <- x %*% b
-  resid <- y - yhat
-  s2 <- stats::var(as.numeric(resid))
-  bse <- sqrt(diag(s2 * solve(crossprod(x))))
-  return(list(b = b, bse = bse, s2 = s2, yhat = yhat))
+create_coeftest <- function(estimates, ses, names = NULL) {
+  if (is.null(names)) {
+    names <- names(estimates)
+    if (is.null(names)) {
+      names <- paste0("V", seq_along(estimates))
+    }
+  }
+  names(estimates) <- names
+  fake_lm <- list(coefficients = estimates)
+  class(fake_lm) <- "lm"
+  out <- lmtest::coeftest(fake_lm, vcov. = diag(ses^2, length(ses), length(ses)))
+  return(out)
 }
 
 #' Generate Spatial Weight Matrix
